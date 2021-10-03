@@ -10,10 +10,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppNotes" >
         <activity
-            android:name=".EditActivity"
+            android:name=".UI.EditActivity"
             android:exported="true" />
         <activity
-            android:name=".ListActivity"
+            android:name=".UI.ListActivity"
             android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

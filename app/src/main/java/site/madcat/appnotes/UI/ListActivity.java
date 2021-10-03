@@ -1,4 +1,4 @@
-package site.madcat.appnotes;
+package site.madcat.appnotes.UI;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,16 +11,26 @@ import android.view.MenuItem;
 
 import androidx.appcompat.widget.Toolbar;
 
+import site.madcat.appnotes.R;
+import site.madcat.appnotes.domain.Note;
+import site.madcat.appnotes.domain.NoteRepoImpl;
+import site.madcat.appnotes.domain.NotesRepo;
+
 public class ListActivity extends AppCompatActivity {
     private Toolbar toolbar;
-
+private NotesRepo repository;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
+        repository =new NoteRepoImpl();
         initialsView();
         setSupportActionBar(toolbar);
 
+        repository.addNote(new Note("заметка 1","текст заметки"));
+        repository.addNote(new Note("заметка 2","текст заметки"));
+        repository.addNote(new Note("заметка 3","текст заметки"));
+        repository.addNote(new Note("заметка 4","текст заметки"));
     }
 
     @Override

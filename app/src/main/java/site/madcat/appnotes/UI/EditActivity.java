@@ -1,7 +1,9 @@
-package site.madcat.appnotes;
+package site.madcat.appnotes.UI;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+
+import site.madcat.appnotes.R;
 
 public class EditActivity extends AppCompatActivity {
 
