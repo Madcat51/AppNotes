@@ -9,20 +9,20 @@ public class Note {
 
         this.title = title;
         this.noteBody = noteBody;
+
     }
 
 
-    public String getTitle() {
-        return title;
-    }
+    public String getTitle() {return title;}
+    public String getNoteBody() {return noteBody;}
+
 
     public void setTitle(String title) {
         this.title = title;
     }
 
-    public String getNoteBody() {
-        return noteBody;
-    }
+
+
 
     public void setNoteBody(String noteBody) {
         this.noteBody = noteBody;

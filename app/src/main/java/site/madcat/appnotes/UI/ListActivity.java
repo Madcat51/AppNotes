@@ -1,6 +1,7 @@
 package site.madcat.appnotes.UI;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -8,8 +9,11 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.AdapterView;
 
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import site.madcat.appnotes.R;
 import site.madcat.appnotes.domain.Note;
@@ -18,19 +22,18 @@ import site.madcat.appnotes.domain.NotesRepo;
 
 public class ListActivity extends AppCompatActivity {
     private Toolbar toolbar;
-private NotesRepo repository;
+    private RecyclerView recyclerView;
+    private NotesAdapter adapter = new NotesAdapter();
+
+    private NotesRepo repository;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
-        repository =new NoteRepoImpl();
         initialsView();
-        setSupportActionBar(toolbar);
 
-        repository.addNote(new Note("заметка 1","текст заметки"));
-        repository.addNote(new Note("заметка 2","текст заметки"));
-        repository.addNote(new Note("заметка 3","текст заметки"));
-        repository.addNote(new Note("заметка 4","текст заметки"));
     }
 
     @Override
@@ -47,7 +50,6 @@ private NotesRepo repository;
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main_menu, menu);
-
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -55,7 +57,7 @@ private NotesRepo repository;
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.new_note: {
-                openEditActivity();
+                openEditActivity(null);
                 return true;
             }
             default:
@@ -63,14 +65,38 @@ private NotesRepo repository;
         }
     }
 
-    private void openEditActivity() {
+    private void openEditActivity(@Nullable Note item) {
         Intent editIntant = new Intent(this, EditActivity.class);
         // editIntant.putExtra(, );
         startActivityForResult(editIntant, 1);
+    }
 
+    private void initRecyclerView() {
+        repository = new NoteRepoImpl();
+        recyclerView = findViewById(R.id.recycler_view);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(adapter);
+
+        repository.addNote(new Note("заметка 1", "текст заметки1"));
+        repository.addNote(new Note("заметка 2", "текст заметки2"));
+        repository.addNote(new Note("заметка 3", "текст заметки3"));
+        repository.addNote(new Note("заметка 4", "текст заметки4"));
+
+        adapter.setData(repository.getNotes());
+        adapter.setOnItemClickListener(this::onItemClick);
+    }
+
+private void onItemClick(Note item){
+    openEditActivity(item);
+}
+    private void initToolbar() {
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
     }
 
     private void initialsView() {
-        toolbar = findViewById(R.id.toolbar);
+        initToolbar();
+        initRecyclerView();
     }
+
 }
