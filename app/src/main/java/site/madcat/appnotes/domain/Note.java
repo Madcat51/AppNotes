@@ -1,27 +1,32 @@
 package site.madcat.appnotes.domain;
 
-public class Note {
+import java.io.Serializable;
+
+public class Note implements Serializable {
     private int id;
     private String title;
     private String noteBody;
 
-    public Note( String title, String noteBody) {
-
+    public Note(String title, String noteBody) {
+        this.id = id;
         this.title = title;
         this.noteBody = noteBody;
 
     }
 
 
-    public String getTitle() {return title;}
-    public String getNoteBody() {return noteBody;}
+    public String getTitle() {
+        return title;
+    }
+
+    public String getNoteBody() {
+        return noteBody;
+    }
 
 
     public void setTitle(String title) {
         this.title = title;
     }
-
-
 
 
     public void setNoteBody(String noteBody) {

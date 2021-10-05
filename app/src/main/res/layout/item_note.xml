@@ -1,39 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
-
     <androidx.cardview.widget.CardView
-        android:padding="16dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_view"
+        android:background="?attr/selectableItemBackground"
+        android:focusable="auto"
+        android:padding="@dimen/padding_view">
         <LinearLayout
-
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="?attr/selectableItemBackground"
-            android:clickable="true"
             android:focusable="auto"
             android:orientation="vertical">
-
             <TextView
                 android:id="@+id/title_text_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:maxLines="1"
-                android:textSize="28sp" />
-
+                android:maxLines="@integer/count_line_title_view"
+                android:textSize="@dimen/font_title_size" />
             <TextView
                 android:id="@+id/detail_text_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:maxLines="2"
-                android:textSize="14sp" />
-
-
+                android:maxLines="@integer/count_line_body_view"
+                android:textSize="@dimen/font_view_size" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 </FrameLayout>

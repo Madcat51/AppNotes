@@ -15,6 +15,8 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.io.Serializable;
+
 import site.madcat.appnotes.R;
 import site.madcat.appnotes.domain.Note;
 import site.madcat.appnotes.domain.NoteRepoImpl;
@@ -24,7 +26,6 @@ public class ListActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private RecyclerView recyclerView;
     private NotesAdapter adapter = new NotesAdapter();
-
     private NotesRepo repository;
 
 
@@ -33,7 +34,6 @@ public class ListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
         initialsView();
-
     }
 
     @Override
@@ -67,7 +67,9 @@ public class ListActivity extends AppCompatActivity {
 
     private void openEditActivity(@Nullable Note item) {
         Intent editIntant = new Intent(this, EditActivity.class);
-        // editIntant.putExtra(, );
+        if (item != null) {
+            editIntant.putExtra(Note.class.getSimpleName(), (Serializable) item);
+        }
         startActivityForResult(editIntant, 1);
     }
 
@@ -76,19 +78,15 @@ public class ListActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
-
-        repository.addNote(new Note("заметка 1", "текст заметки1"));
-        repository.addNote(new Note("заметка 2", "текст заметки2"));
-        repository.addNote(new Note("заметка 3", "текст заметки3"));
-        repository.addNote(new Note("заметка 4", "текст заметки4"));
-
+        fillRecyclerView();
         adapter.setData(repository.getNotes());
         adapter.setOnItemClickListener(this::onItemClick);
     }
 
-private void onItemClick(Note item){
-    openEditActivity(item);
-}
+    private void onItemClick(Note item) {
+        openEditActivity(item);
+    }
+
     private void initToolbar() {
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -98,5 +96,23 @@ private void onItemClick(Note item){
         initToolbar();
         initRecyclerView();
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == -1) {
+            Note note = (Note) data.getSerializableExtra(Note.class.getSimpleName());
+            repository.addNote(new Note(note.getTitle(), note.getNoteBody()));
+            adapter.setData(repository.getNotes());
+        }
+    }
+
+    private void fillRecyclerView() {
+        repository.addNote(new Note("заметка 1", "текст заметки1"));
+        repository.addNote(new Note("заметка 2", "текст заметки2 лалалалала лалалалал лалалал лалалалала лалалалал лалалал лалалалала лалалалал лалалал лалалалала лалалалал лалалал лалалалала лалалалал лалалал"));
+        repository.addNote(new Note("заметка 3", "текст заметки3"));
+        repository.addNote(new Note("заметка 4", "текст заметки4"));
+    }
+
 
 }
