@@ -47,7 +47,6 @@ public class NotesAdapter extends RecyclerView.Adapter<NoteVH> {
     @Override
     public int getItemCount() {
         return data.size();
-
     }
 
     public void setOnItemClickListener(onItemClickListener listener) {

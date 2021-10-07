@@ -15,19 +15,17 @@ import site.madcat.appnotes.domain.NoteRepoImpl;
 import site.madcat.appnotes.domain.NotesRepo;
 
 public class EditActivity extends AppCompatActivity {
-    private EditText titleEditText;
-    private EditText bodyEditText;
-    private Button saveChangeButton;
+
     private int id;
-    private boolean newRecord = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit);
-        initialsView();
+
         Bundle arguments = getIntent().getExtras();
-        if (arguments != null) {
+       /* if (arguments != null) {
             Note note;
             note = (Note) arguments.getSerializable(Note.class.getSimpleName());
             titleEditText.setText(note.getTitle());
@@ -48,13 +46,9 @@ public class EditActivity extends AppCompatActivity {
                 setResult(RESULT_OK, intent);
             }
             finish();
-        });
+        });*/
     }
 
-    private void initialsView() {
-        titleEditText = findViewById(R.id.title_edit_text);
-        bodyEditText = findViewById(R.id.body_edit_text);
-        saveChangeButton = findViewById(R.id.save_change_button);
-    }
+
 
 }
