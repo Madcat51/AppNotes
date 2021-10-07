@@ -13,18 +13,25 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import site.madcat.appnotes.R;
+import site.madcat.appnotes.domain.Note;
 
 public class EditNoteFragment extends Fragment {
     private EditText titleEditText;
     private EditText bodyEditText;
     private Button saveChangeButton;
+public Note item;
 
+    public EditNoteFragment(Note item) {
 
-    public EditNoteFragment() {
+this.item=item;
 
     }
 
+    public EditNoteFragment() {
 
+
+
+    }
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,14 +55,16 @@ public class EditNoteFragment extends Fragment {
 
                //todo здесь добавление
             }
-            ((ListActivity) requireActivity()).replaceFragment(new ListFragment()) ;
+          //  ((ListActivity) requireActivity()).replaceFragment(new ListFragment()) ;
 
         });
     }
+
 
     private void initialsView() {
         titleEditText = getActivity().findViewById(R.id.title_edit_text);
         bodyEditText = getActivity().findViewById(R.id.body_edit_text);
         saveChangeButton = getActivity().findViewById(R.id.save_change_button);
     }
+
 }

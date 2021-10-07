@@ -1,10 +1,8 @@
 package site.madcat.appnotes.UI;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -12,18 +10,11 @@ import android.view.MenuItem;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import java.io.Serializable;
 
 import site.madcat.appnotes.R;
 import site.madcat.appnotes.domain.Note;
-import site.madcat.appnotes.domain.NoteRepoImpl;
-import site.madcat.appnotes.domain.NotesRepo;
 
-public class ListActivity extends AppCompatActivity {
+public class ListActivity extends AppCompatActivity implements ListFragment.Controller {
     private Toolbar toolbar;
     public boolean newRecord = false;
 
@@ -56,14 +47,30 @@ public class ListActivity extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
-
-    public void replaceFragment(Fragment fragment) {
+    public void replaceToListFragment() {
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.fragment_container, fragment)
+                .replace(R.id.fragment_container, new ListFragment())
+                .addToBackStack(null)
+                .commit();
+    }
+    @Override
+    public void replaceNoteFragment(Note item) {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container, new EditNoteFragment(item))
+                .addToBackStack(null)
                 .commit();
     }
 
+
+    public void replaceToNoteFragment() {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container, new EditNoteFragment())
+                .addToBackStack(null)
+                .commit();
+    }
 
 
 
@@ -77,7 +84,7 @@ public class ListActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.new_note: {
                 newRecord = true;
-                replaceFragment(new EditNoteFragment());
+                replaceToNoteFragment();
                 return true;
             }
             default:
@@ -85,6 +92,13 @@ public class ListActivity extends AppCompatActivity {
         }
 
     }
+
+    @Override
+    public void onPointerCaptureChanged(boolean hasCapture) {
+
+    }
+
+
 }
 
 

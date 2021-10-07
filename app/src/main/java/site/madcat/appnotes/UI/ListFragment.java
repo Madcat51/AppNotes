@@ -24,6 +24,8 @@ public class ListFragment extends Fragment {
     private RecyclerView recyclerView;
     private NotesAdapter adapter = new NotesAdapter();
     private Context activitycontext;
+    private Controller controller;
+
     public ListFragment() {
 
     }
@@ -35,19 +37,17 @@ public class ListFragment extends Fragment {
 
     }
 
- /*   @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }*/
+
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        activitycontext = context;
+        if (context instanceof Controller) {
+            controller = (Controller) context;
+        } else {
+            //todo
+        }
+
     }
 
     @Override
@@ -64,18 +64,26 @@ public class ListFragment extends Fragment {
 
     }
 
+    @Override
+    public void onDestroy() {
+        controller = null;
+        super.onDestroy();
+
+    }
+
     private void initRecyclerView() {
         repository = new NoteRepoImpl();
         recyclerView = getActivity().findViewById(R.id.recycler_view);
-        recyclerView.setLayoutManager(new LinearLayoutManager(activitycontext));
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(adapter);
         fillRecyclerView();
         adapter.setData(repository.getNotes());
-        adapter.setOnItemClickListener(v->{
+        adapter.setOnItemClickListener(v -> {
             //todo передать note
-            ((ListActivity) requireActivity()).replaceFragment(new EditNoteFragment());
+         //   controller.replaceNoteFragment(Note item);
         });
     }
+
 
     private void fillRecyclerView() {
         repository.addNote(new Note("заметка 1", "текст заметки1"));
@@ -84,5 +92,9 @@ public class ListFragment extends Fragment {
         repository.addNote(new Note("заметка 4", "текст заметки4"));
     }
 
+    interface Controller {
+        void replaceNoteFragment(Note item);
+
+    }
 
 }
