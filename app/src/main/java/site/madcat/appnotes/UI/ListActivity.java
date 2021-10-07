@@ -64,10 +64,7 @@ public class ListActivity extends AppCompatActivity {
                 .commit();
     }
 
-    private void onItemClick() {//Note item
-      replaceFragment(new EditNoteFragment());
-        //  openEditActivity(item);
-    }
+
 
 
     private void initToolbar() {

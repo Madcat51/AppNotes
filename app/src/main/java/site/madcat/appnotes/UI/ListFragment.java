@@ -71,7 +71,10 @@ public class ListFragment extends Fragment {
         recyclerView.setAdapter(adapter);
         fillRecyclerView();
         adapter.setData(repository.getNotes());
-       // adapter.setOnItemClickListener(this::onItemClick);
+        adapter.setOnItemClickListener(v->{
+            //todo передать note
+            ((ListActivity) requireActivity()).replaceFragment(new EditNoteFragment());
+        });
     }
 
     private void fillRecyclerView() {
