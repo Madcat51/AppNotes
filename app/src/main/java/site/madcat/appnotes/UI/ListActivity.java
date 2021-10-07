@@ -14,7 +14,7 @@ import androidx.fragment.app.Fragment;
 import site.madcat.appnotes.R;
 import site.madcat.appnotes.domain.Note;
 
-public class ListActivity extends AppCompatActivity implements ListFragment.Controller {
+public class ListActivity extends AppCompatActivity implements ListFragment.Controller, EditNoteFragment.Controller {
     private Toolbar toolbar;
     public boolean newRecord = false;
 
@@ -24,11 +24,9 @@ public class ListActivity extends AppCompatActivity implements ListFragment.Cont
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
         initToolbar();
-        getSupportFragmentManager()
-                .beginTransaction()
-                .add(R.id.fragment_container, new ListFragment())
-                .commit();
+        fillFragment();
     }
+
 
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
@@ -51,18 +49,24 @@ public class ListActivity extends AppCompatActivity implements ListFragment.Cont
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.fragment_container, new ListFragment())
-                .addToBackStack(null)
                 .commit();
     }
+
+    public void replaceToListFragment(Note item) {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container, ListFragment.setInputArgumentsListFrames(item))
+                .commit();
+    }
+
     @Override
     public void replaceNoteFragment(Note item) {
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.fragment_container, new EditNoteFragment(item))
+                .replace(R.id.fragment_container, EditNoteFragment.setInputArgumentsNoteFrames(item))
                 .addToBackStack(null)
                 .commit();
     }
-
 
     public void replaceToNoteFragment() {
         getSupportFragmentManager()
@@ -72,6 +76,12 @@ public class ListActivity extends AppCompatActivity implements ListFragment.Cont
                 .commit();
     }
 
+    public void fillFragment() {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .add(R.id.fragment_container, new ListFragment())
+                .commit();
+    }
 
 
     private void initToolbar() {
@@ -90,37 +100,8 @@ public class ListActivity extends AppCompatActivity implements ListFragment.Cont
             default:
                 return super.onOptionsItemSelected(item);
         }
-
     }
-
-    @Override
-    public void onPointerCaptureChanged(boolean hasCapture) {
-
-    }
-
-
 }
 
 
 
-
-
-/*  @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-    *//*    if (resultCode == -1) {
-            Note note = (Note) data.getSerializableExtra(Note.class.getSimpleName());
-            repository.addNote(new Note(note.getTitle(), note.getNoteBody()));
-            adapter.setData(repository.getNotes());
-        }*//*
-    }*/
-
-
-
-  /*  private void openEditActivity(@Nullable Note item) {
-        Intent editIntant = new Intent(this, EditActivity.class);
-        if (item != null) {
-            editIntant.putExtra(Note.class.getSimpleName(), (Serializable) item);
-        }
-        startActivityForResult(editIntant, 1);
-    }*/
