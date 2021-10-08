@@ -2,4 +2,6 @@
 <resources>
     <integer name="count_line_title_view">1</integer>
     <integer name="count_line_body_view">3</integer>
+    <integer name="weight_list_frame">1</integer>
+    <integer name="weight_note_frame">1</integer>
 </resources>

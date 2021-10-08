@@ -20,16 +20,20 @@ import site.madcat.appnotes.domain.NotesRepo;
 
 
 public class ListFragment extends Fragment {
-    private NotesRepo repository;
+    private NotesRepo listRepo;
     private RecyclerView recyclerView;
     private NotesAdapter adapter = new NotesAdapter();
     private Controller controller;
+    private Bundle noteForSave;
 
- private Bundle noteForSave;
     public ListFragment() {
-
     }
 
+    interface Controller {
+        void moveToNoteFragment(Note item);
+        void fillRecyclerView();
+         NotesRepo getRepo();
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -51,18 +55,20 @@ public class ListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_list, container, false);
+
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        listRepo= controller.getRepo();
         initRecyclerView();
         noteForSave = getArguments();
         if (noteForSave != null) {
-            Note note = (Note) noteForSave.getSerializable(Note.class.getSimpleName());
+        /*    Note note = (Note) noteForSave.getSerializable(Note.class.getSimpleName());
             repository.addNote(new Note(note.getTitle(), note.getNoteBody()));
             adapter.setData(repository.getNotes());
-            repository.addNote(new Note(note.getTitle(), note.getNoteBody()));
+            repository.addNote(new Note(note.getTitle(), note.getNoteBody()));*/
 
         }
 
@@ -75,25 +81,19 @@ public class ListFragment extends Fragment {
     }
 
     private void initRecyclerView() {
-        repository = new NoteRepoImpl();
         recyclerView = getActivity().findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(adapter);
-        fillRecyclerView();
-        adapter.setData(repository.getNotes());
+        controller.fillRecyclerView();
+        adapter.setData(listRepo.getNotes());
         adapter.setOnItemClickListener(this::onItemClick);
     }
 
     private void onItemClick(Note item) {
-        controller.replaceNoteFragment(item);
+        controller.moveToNoteFragment(item);
     }
 
-    private void fillRecyclerView() {
-        repository.addNote(new Note("заметка 1", "текст заметки1"));
-        repository.addNote(new Note("заметка 2", "текст заметки2 лалалалала лалалалал лалалал лалалалала лалалалал лалалал лалалалала лалалалал лалалал лалалалала лалалалал лалалал лалалалала лалалалал лалалал"));
-        repository.addNote(new Note("заметка 3", "текст заметки3"));
-        repository.addNote(new Note("заметка 4", "текст заметки4"));
-    }
+
     public static ListFragment setInputArgumentsListFrames(Note note) {
         ListFragment listFragment = new ListFragment();
         Bundle bundle = new Bundle();
@@ -102,9 +102,5 @@ public class ListFragment extends Fragment {
         return listFragment;
     }
 
-    interface Controller {
-        void replaceNoteFragment(Note item);
-
-    }
 
 }

@@ -26,9 +26,12 @@ public class EditNoteFragment extends Fragment {
     private int id;
     private Controller controller;
 
-    public EditNoteFragment() {
-    }
+    public EditNoteFragment() {}
 
+    interface Controller {
+        void replaceToListFragment(Note note);
+        void replaceToListFragment();
+    }
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -107,13 +110,7 @@ public class EditNoteFragment extends Fragment {
         return editNoteFragment;
     }
 
-    interface Controller {
-        void replaceToListFragment(Note note);
 
-        void replaceToListFragment();
-
-
-    }
 }
 
 

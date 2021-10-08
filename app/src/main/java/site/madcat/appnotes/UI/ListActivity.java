@@ -13,18 +13,24 @@ import androidx.fragment.app.Fragment;
 
 import site.madcat.appnotes.R;
 import site.madcat.appnotes.domain.Note;
+import site.madcat.appnotes.domain.NoteRepoImpl;
+import site.madcat.appnotes.domain.NotesRepo;
 
 public class ListActivity extends AppCompatActivity implements ListFragment.Controller, EditNoteFragment.Controller {
     private Toolbar toolbar;
     public boolean newRecord = false;
+    public NotesRepo repository;
 
+    private ListFragment listFragment = new ListFragment();
+    private EditNoteFragment editNoteFragment = new EditNoteFragment();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
+        repository = new NoteRepoImpl();
         initToolbar();
-        fillFragment();
+        firstLoadFragment();
     }
 
 
@@ -48,38 +54,34 @@ public class ListActivity extends AppCompatActivity implements ListFragment.Cont
     public void replaceToListFragment() {
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.fragment_container, new ListFragment())
+                // .replace(R.id.fragment_container, new ListFragment())
                 .commit();
     }
 
     public void replaceToListFragment(Note item) {
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.fragment_container, ListFragment.setInputArgumentsListFrames(item))
+                // .replace(R.id.fragment_container, ListFragment.setInputArgumentsListFrames(item))
                 .commit();
     }
 
     @Override
-    public void replaceNoteFragment(Note item) {
+    public void moveToNoteFragment(Note item) {
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.fragment_container, EditNoteFragment.setInputArgumentsNoteFrames(item))
+                 .replace(R.id.note_container_fragment, EditNoteFragment.setInputArgumentsNoteFrames(item))
+                .hide(listFragment)
                 .addToBackStack(null)
                 .commit();
     }
 
-    public void replaceToNoteFragment() {
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.fragment_container, new EditNoteFragment())
-                .addToBackStack(null)
-                .commit();
-    }
 
-    public void fillFragment() {
+
+    public void firstLoadFragment() {
         getSupportFragmentManager()
                 .beginTransaction()
-                .add(R.id.fragment_container, new ListFragment())
+                .replace(R.id.list_container_fragment, listFragment)
+                .hide(editNoteFragment)
                 .commit();
     }
 
@@ -89,18 +91,28 @@ public class ListActivity extends AppCompatActivity implements ListFragment.Cont
         setSupportActionBar(toolbar);
     }
 
+    public void fillRecyclerView() {
+        repository.addNote(new Note("заметка 1", "текст заметки1"));
+        repository.addNote(new Note("заметка 2", "текст заметки2 лалалалала лалалалал лалалал лалалалала лалалалал лалалал лалалалала лалалалал лалалал лалалалала лалалалал лалалал лалалалала лалалалал лалалал"));
+        repository.addNote(new Note("заметка 3", "текст заметки3"));
+        repository.addNote(new Note("заметка 4", "текст заметки4"));
+    }
+public  NotesRepo getRepo(){
+ return repository;
+}
 
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.new_note: {
                 newRecord = true;
-                replaceToNoteFragment();
+                moveToNoteFragment(null);
                 return true;
             }
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
+
 }
 
 
