@@ -76,7 +76,6 @@ public class ListActivity extends AppCompatActivity implements ListFragment.Cont
     }
 
 
-
     public void firstLoadFragment() {
         getSupportFragmentManager()
                 .beginTransaction()
