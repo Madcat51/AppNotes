@@ -4,18 +4,22 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
+
     <EditText
         android:id="@+id/title_edit_text"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="@dimen/zero_height"
+        android:layout_weight="@integer/weight_note_title" />
     <EditText
         android:id="@+id/body_edit_text"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="@dimen/zero_height"
+        android:layout_weight="@integer/weight_note_detail"/>
     <Button
         android:id="@+id/save_change_button"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/zero_height"
+        android:layout_weight="@integer/weight_note_save_button"
         android:text="@string/save_button_text" />
 
 </LinearLayout>

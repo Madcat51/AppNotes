@@ -4,4 +4,13 @@
     <integer name="count_line_body_view">3</integer>
     <integer name="weight_list_frame">1</integer>
     <integer name="weight_note_frame">1</integer>
+    <integer name="weight_note_title">1</integer>
+    <integer name="weight_note_detail">4</integer>
+    <integer name="weight_note_save_button">1</integer>
+    <integer name="max_line_title">2</integer>
+    <integer name="max_line_detail">2</integer>
+    <integer name="min_line_title">3</integer>
+    <integer name="min_line_detail">6</integer>
+
+
 </resources>

@@ -5,12 +5,12 @@ import java.io.Serializable;
 public class Note implements Serializable {
     private int id;
     private String title;
-    private String noteBody;
+    private String noteDetail;
 
-    public Note(String title, String noteBody) {
+    public Note(String title, String noteDetail) {
         this.id = id;
         this.title = title;
-        this.noteBody = noteBody;
+        this.noteDetail = noteDetail;
 
     }
 
@@ -19,8 +19,8 @@ public class Note implements Serializable {
         return title;
     }
 
-    public String getNoteBody() {
-        return noteBody;
+    public String getNoteDetail() {
+        return noteDetail;
     }
 
 
@@ -29,8 +29,8 @@ public class Note implements Serializable {
     }
 
 
-    public void setNoteBody(String noteBody) {
-        this.noteBody = noteBody;
+    public void setNoteDetail(String noteDetail) {
+        this.noteDetail = noteDetail;
     }
 
 

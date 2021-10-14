@@ -37,7 +37,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NoteVH> {
         Note note = getItem(position);
         holder.itemView.setOnClickListener(v->clickListener.onItemClick(note) );
         holder.titleTextView.setText(note.getTitle());
-        holder.detailTextView.setText(note.getNoteBody());
+        holder.detailTextView.setText(note.getNoteDetail());
     }
 
     private Note getItem(int position) {

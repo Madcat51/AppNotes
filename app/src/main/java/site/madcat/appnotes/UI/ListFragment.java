@@ -24,20 +24,24 @@ public class ListFragment extends Fragment {
     private RecyclerView recyclerView;
     private NotesAdapter adapter = new NotesAdapter();
     private Controller controller;
-    private Bundle noteForSave;
+
 
     public ListFragment() {
     }
 
     interface Controller {
-        void moveToNoteFragment(Note item);
-        void fillRecyclerView();
-         NotesRepo getRepo();
+        void loadNote(Note note);
+
+        void addNewNote(String title, String detail);
+
+        NotesRepo getRepo();
     }
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void onResume() {
+        super.onResume();
+
+
     }
 
 
@@ -52,6 +56,12 @@ public class ListFragment extends Fragment {
     }
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setRetainInstance(true);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_list, container, false);
@@ -61,16 +71,14 @@ public class ListFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        listRepo= controller.getRepo();
+        listRepo = controller.getRepo();
         initRecyclerView();
-        noteForSave = getArguments();
-        if (noteForSave != null) {
-        /*    Note note = (Note) noteForSave.getSerializable(Note.class.getSimpleName());
-            repository.addNote(new Note(note.getTitle(), note.getNoteBody()));
-            adapter.setData(repository.getNotes());
-            repository.addNote(new Note(note.getTitle(), note.getNoteBody()));*/
+        // controller.addNewNote("1", "detail");
+    }
 
-        }
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
 
     }
 
@@ -80,26 +88,20 @@ public class ListFragment extends Fragment {
         super.onDestroy();
     }
 
-    private void initRecyclerView() {
+    public void initRecyclerView() {
         recyclerView = getActivity().findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(adapter);
-        controller.fillRecyclerView();
         adapter.setData(listRepo.getNotes());
         adapter.setOnItemClickListener(this::onItemClick);
     }
 
-    private void onItemClick(Note item) {
-        controller.moveToNoteFragment(item);
+    public void refreshAdapter() {
+        adapter.setData(listRepo.getNotes());
     }
 
-
-    public static ListFragment setInputArgumentsListFrames(Note note) {
-        ListFragment listFragment = new ListFragment();
-        Bundle bundle = new Bundle();
-        bundle.putSerializable(Note.class.getSimpleName(), note);
-        listFragment.setArguments(bundle);
-        return listFragment;
+    private void onItemClick(Note note) {
+        controller.loadNote(note);
     }
 
 

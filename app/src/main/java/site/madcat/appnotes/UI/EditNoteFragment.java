@@ -20,17 +20,24 @@ import site.madcat.appnotes.domain.Note;
 
 public class EditNoteFragment extends Fragment {
     private EditText titleEditText;
-    private EditText bodyEditText;
+    private EditText detailEditText;
     private Button saveChangeButton;
-    public Note item;
     private int id;
+    private String oldTitle;
+    private String oldDetail;
     private Controller controller;
 
-    public EditNoteFragment() {}
+    public EditNoteFragment() {
+    }
 
     interface Controller {
-        void replaceToListFragment(Note note);
-        void replaceToListFragment();
+        void loadList();
+
+        boolean getScreenOrientation();
+
+        void editNote(int id, String title, String detail);
+
+        void addNewNote(String title, String detail);
     }
 
     @Override
@@ -46,6 +53,7 @@ public class EditNoteFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
     }
 
 
@@ -53,56 +61,66 @@ public class EditNoteFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_edit_note, container, false);
+
     }
 
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        initialsView();
-        Bundle argument = getArguments();
-        if (argument != null) {
-            Note note = (Note) argument.getSerializable(Note.class.getSimpleName());
-            titleEditText.setText(note.getTitle());
-            bodyEditText.setText(note.getNoteBody());
-            id = note.getId();
-            getNoteFromList(item);
-        }
-
+        initialsView(view);
+        getParams();
         saveChangeButton.setOnClickListener(v -> {
-            if (((ListActivity) requireActivity()).newRecord == true) {
-                Note newNote = new Note(
-                        titleEditText.getText().toString(),
-                        bodyEditText.getText().toString()
-
-                );
-                controller.replaceToListFragment(newNote);
-
-            } else {
-                controller.replaceToListFragment();//
+            if (titleEditText.getText() != null | detailEditText.getText() != null) {
+                if (((ListActivity) requireActivity()).newRecord == true) {
+                    controller.addNewNote(titleEditText.getText().toString(), detailEditText.getText().toString());
+                    ((ListActivity) requireActivity()).newRecord = false;
+                    clearView();
+                } else {
+                    if ((oldTitle != titleEditText.getText().toString()) | (oldTitle != titleEditText.getText().toString())) {
+                        controller.editNote(id, titleEditText.getText().toString(), detailEditText.getText().toString());
+                    }
+                }
+                if (controller.getScreenOrientation() == true) {
+                    controller.loadList();
+                }
             }
-
-
         });
     }
 
-    private void initialsView() {
-        titleEditText = getActivity().findViewById(R.id.title_edit_text);
-        bodyEditText = getActivity().findViewById(R.id.body_edit_text);
-        saveChangeButton = getActivity().findViewById(R.id.save_change_button);
+    public void getParams() {
+        Bundle argument = getArguments();
+        if (argument != null) {
+            Note note = (Note) argument.getSerializable(Note.class.getSimpleName());
+            ((ListActivity) requireActivity()).newRecord = false;
+            getNoteFromList(note);
+        } else {
+            ((ListActivity) requireActivity()).newRecord = true;
+        }
+    }
+
+    private void clearView() {
+        titleEditText.setText(null);
+        detailEditText.setText(null);
+    }
+
+    private void initialsView(View view) {
+        titleEditText = view.findViewById(R.id.title_edit_text);
+        detailEditText = view.findViewById(R.id.body_edit_text);
+        saveChangeButton = view.findViewById(R.id.save_change_button);
     }
 
     private void getNoteFromList(Note note) {
         if (note != null) {
+            oldTitle = note.getTitle();
+            oldDetail = note.getNoteDetail();
             titleEditText.setText(note.getTitle());
-            bodyEditText.setText(note.getNoteBody());
+            detailEditText.setText(note.getNoteDetail());
             id = note.getId();
-        } else {
-
         }
     }
 
-    public static EditNoteFragment setInputArgumentsNoteFrames(Note note) {
+    public EditNoteFragment setInputArgumentsNoteFrames(Note note) {
         EditNoteFragment editNoteFragment = new EditNoteFragment();
         Bundle bundle = new Bundle();
         bundle.putSerializable(Note.class.getSimpleName(), note);
