@@ -33,26 +33,41 @@ public class ListActivity extends AppCompatActivity implements ListFragment.Cont
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
+        repository = new NoteRepoImpl();
+        initToolbar();
+
+        listFragment=(ListFragment) getLastCustomNonConfigurationInstance();
         if (listFragment == null) {
             listFragment = new ListFragment();
         }
-
-
-        repository = new NoteRepoImpl();
-        initToolbar();
         loadList();
+
+
+
+
+    }
+
+    @Nullable
+    @Override
+    public Object onRetainCustomNonConfigurationInstance() {
+        return listFragment;
+    }
+
+    @Nullable
+    @Override
+    public Object getLastCustomNonConfigurationInstance() {
+        return super.getLastCustomNonConfigurationInstance();
     }
 
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
-        outState.putSerializable(REPOKEY, (Serializable) repository);
+      outState.putSerializable(REPOKEY, (Serializable) repository);
         super.onSaveInstanceState(outState);
     }
 
     @Override
     protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-        repository = (NoteRepoImpl) savedInstanceState.getSerializable(REPOKEY);
+     repository = (NoteRepoImpl) savedInstanceState.getSerializable(REPOKEY);
     }
 
     public void loadList() {
@@ -88,7 +103,9 @@ public class ListActivity extends AppCompatActivity implements ListFragment.Cont
         repository.addNote(new Note(title, detail));
         listFragment.refreshAdapter();
     }
-
+public void refreshAdapter(){
+    listFragment.refreshAdapter();
+}
 
     public void loadNote(Note note) {
         if (getScreenOrientation() == true) {

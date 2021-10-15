@@ -28,7 +28,7 @@
 
             <FrameLayout
                 android:id="@+id/container_fragment"
-                android:layout_width="0dp"
+                android:layout_width="@dimen/zero"
                 android:layout_height="match_parent"
                 android:layout_weight="@integer/weight_note_frame"
                 >
@@ -37,7 +37,8 @@
 
             <FrameLayout
                 android:id="@+id/note_detail_fragment"
-                android:layout_width="0dp"
+                android:background="@color/dark_gray"
+                android:layout_width="@dimen/zero"
                 android:layout_height="match_parent"
                 android:layout_weight="@integer/weight_note_frame"></FrameLayout>
 
