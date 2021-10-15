@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/note_navigation"
+        android:icon="@drawable/ic_baseline_note_24"
+        android:title="@string/note_name_frame" />
+
+    <item
+        android:id="@+id/arhive_navigation"
+        android:icon="@drawable/ic_baseline_arhive_24"
+        android:title="@string/arhive_name_frame" />
+
+    <item
+        android:id="@+id/setting_navigation"
+        android:icon="@drawable/ic_baseline_settings_24"
+        android:title="@string/setting_name_frame" />
+
+</menu>

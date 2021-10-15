@@ -3,4 +3,8 @@
     <string name="add_note_title">Создать заметку</string>
     <string name="save_button_text">Сохранить</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="setting_name_frame">Настройки</string>
+    <string name="note_name_frame">Заметки</string>
+    <string name="arhive_name_frame">Архив</string>
+
 </resources>
