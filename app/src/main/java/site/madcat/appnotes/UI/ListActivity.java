@@ -9,10 +9,16 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+
+import com.google.android.material.bottomnavigation.BottomNavigationMenuView;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationBarView;
 
 import java.io.Serializable;
 
@@ -23,8 +29,12 @@ import site.madcat.appnotes.domain.NotesRepo;
 
 public class ListActivity extends AppCompatActivity implements ListFragment.Controller, EditNoteFragment.Controller {
     private Toolbar toolbar;
+    private BottomNavigationView bottomNavigationView;
     public boolean newRecord = false;
     public NotesRepo repository;
+    public ArhiveFragment arhiveFragment=new ArhiveFragment();
+    public MainListFragment mainListFragment=new MainListFragment();
+    public SettingFragment settingFragment=new SettingFragment();
     public ListFragment listFragment;
     public EditNoteFragment editNoteFragment = new EditNoteFragment();
     private static final String REPOKEY = "REPO_KEY";
@@ -34,13 +44,51 @@ public class ListActivity extends AppCompatActivity implements ListFragment.Cont
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
         repository = new NoteRepoImpl();
-        initToolbar();
+        initViews();
 
-        listFragment = (ListFragment) getLastCustomNonConfigurationInstance();
+
+       /* listFragment = (ListFragment) getLastCustomNonConfigurationInstance();
         if (listFragment == null) {
             listFragment = new ListFragment();
-        }
-        loadList();
+        }*/
+        //loadList();
+    }
+
+    private void initViews() {
+        initToolbar();
+        initBottomMenu();
+    }
+
+    private void initBottomMenu() {
+        bottomNavigationView = findViewById(R.id.navigation_menu_view);
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            Fragment fragment;
+            switch (item.getItemId()) {
+                case R.id.note_navigation: {
+                    fragment = mainListFragment;
+                    break;
+                }
+                case R.id.arhive_navigation: {
+                    fragment = arhiveFragment;
+                    break;
+                }
+                case R.id.setting_navigation: {
+                    fragment = settingFragment;
+                    break;
+                }
+                default:
+                    fragment = mainListFragment;
+                    break;
+            }
+            fragmentManager.beginTransaction().replace(R.id.container_fragment,fragment).commit();
+            return false;
+        });
+    }
+
+    private void initToolbar() {
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
     }
 
     @Nullable
@@ -120,10 +168,6 @@ public class ListActivity extends AppCompatActivity implements ListFragment.Cont
         getSupportFragmentManager().beginTransaction().replace(R.id.note_detail_fragment, editNoteFragment.setInputArgumentsNoteFrames(note)).commit();
     }
 
-    private void initToolbar() {
-        toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-    }
 
     public NotesRepo getRepo() {
         return repository;
