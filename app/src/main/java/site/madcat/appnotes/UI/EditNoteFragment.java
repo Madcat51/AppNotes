@@ -35,7 +35,7 @@ public class EditNoteFragment extends Fragment {
 
         boolean getScreenOrientation();
 
-        void refreshAdapter();
+
 
         void editNote(int id, String title, String detail);
 
@@ -54,7 +54,7 @@ public class EditNoteFragment extends Fragment {
 
     @Override
     public void onResume() {
-        controller.refreshAdapter();
+
         super.onResume();
     }
 
