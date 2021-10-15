@@ -10,11 +10,13 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/zero"
         android:layout_weight="@integer/weight_note_title" />
+
     <EditText
         android:id="@+id/body_edit_text"
         android:layout_width="match_parent"
         android:layout_height="@dimen/zero"
-        android:layout_weight="@integer/weight_note_detail"/>
+        android:layout_weight="@integer/weight_note_detail" />
+
     <Button
         android:id="@+id/save_change_button"
         android:layout_width="match_parent"

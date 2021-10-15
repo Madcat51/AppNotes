@@ -30,17 +30,16 @@
                 android:id="@+id/container_fragment"
                 android:layout_width="@dimen/zero"
                 android:layout_height="match_parent"
-                android:layout_weight="@integer/weight_note_frame"
-                >
+                android:layout_weight="@integer/weight_note_frame">
 
             </FrameLayout>
 
             <FrameLayout
                 android:id="@+id/note_detail_fragment"
-                android:background="@color/dark_gray"
                 android:layout_width="@dimen/zero"
                 android:layout_height="match_parent"
-                android:layout_weight="@integer/weight_note_frame"></FrameLayout>
+                android:layout_weight="@integer/weight_note_frame"
+                android:background="@color/dark_gray"></FrameLayout>
 
         </LinearLayout>
 

@@ -36,15 +36,11 @@ public class ListActivity extends AppCompatActivity implements ListFragment.Cont
         repository = new NoteRepoImpl();
         initToolbar();
 
-        listFragment=(ListFragment) getLastCustomNonConfigurationInstance();
+        listFragment = (ListFragment) getLastCustomNonConfigurationInstance();
         if (listFragment == null) {
             listFragment = new ListFragment();
         }
         loadList();
-
-
-
-
     }
 
     @Nullable
@@ -61,13 +57,13 @@ public class ListActivity extends AppCompatActivity implements ListFragment.Cont
 
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
-      outState.putSerializable(REPOKEY, (Serializable) repository);
+        outState.putSerializable(REPOKEY, (Serializable) repository);
         super.onSaveInstanceState(outState);
     }
 
     @Override
     protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
-     repository = (NoteRepoImpl) savedInstanceState.getSerializable(REPOKEY);
+        repository = (NoteRepoImpl) savedInstanceState.getSerializable(REPOKEY);
     }
 
     public void loadList() {
@@ -103,9 +99,10 @@ public class ListActivity extends AppCompatActivity implements ListFragment.Cont
         repository.addNote(new Note(title, detail));
         listFragment.refreshAdapter();
     }
-public void refreshAdapter(){
-    listFragment.refreshAdapter();
-}
+
+    public void refreshAdapter() {
+        listFragment.refreshAdapter();
+    }
 
     public void loadNote(Note note) {
         if (getScreenOrientation() == true) {

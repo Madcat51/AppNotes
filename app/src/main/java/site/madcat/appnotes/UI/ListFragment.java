@@ -41,7 +41,6 @@ public class ListFragment extends Fragment {
     public void onResume() {
         super.onResume();
         initData();
-
     }
 
 
@@ -58,13 +57,12 @@ public class ListFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setRetainInstance(true);
+        //  setRetainInstance(true);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         return inflater.inflate(R.layout.fragment_list, container, false);
 
     }
@@ -72,8 +70,6 @@ public class ListFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        // controller.addNewNote("1", "detail");
     }
 
     @Override
@@ -92,7 +88,6 @@ public class ListFragment extends Fragment {
         listRepo = controller.getRepo();
         initRecyclerView();
     }
-
 
     public void initRecyclerView() {
         recyclerView = getActivity().findViewById(R.id.recycler_view);

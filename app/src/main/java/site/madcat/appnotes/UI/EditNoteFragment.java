@@ -34,7 +34,9 @@ public class EditNoteFragment extends Fragment {
         void loadList();
 
         boolean getScreenOrientation();
+
         void refreshAdapter();
+
         void editNote(int id, String title, String detail);
 
         void addNewNote(String title, String detail);
@@ -87,14 +89,9 @@ public class EditNoteFragment extends Fragment {
                         controller.editNote(id, titleEditText.getText().toString(), detailEditText.getText().toString());
                     }
                 }
-
-
-               // controller.refreshAdapter();
-
                 if (controller.getScreenOrientation() == true) {
                     controller.loadList();
                 }
-
             }
         });
     }
