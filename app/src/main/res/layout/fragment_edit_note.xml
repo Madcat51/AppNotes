@@ -2,26 +2,32 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/dark_gray"
     android:orientation="vertical">
 
     <EditText
         android:id="@+id/title_edit_text"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/zero"
-        android:layout_weight="@integer/weight_note_title" />
+
+        android:layout_height="wrap_content"
+        android:gravity="top"
+        android:maxLines="@integer/max_line_title"
+        android:textSize="@dimen/font_title_size" />
 
     <EditText
         android:id="@+id/body_edit_text"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/zero"
-        android:layout_weight="@integer/weight_note_detail" />
+        android:layout_height="wrap_content"
+        android:gravity="top"
+        android:maxLines="@integer/max_line_detail"
+        android:minLines="@integer/min_line_detail"
+        android:textSize="@dimen/font_view_size" />
 
     <Button
         android:id="@+id/save_change_button"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/zero"
-        android:layout_weight="@integer/weight_note_save_button"
+        android:layout_height="wrap_content"
         android:text="@string/save_button_text" />
 
 </LinearLayout>

@@ -4,16 +4,15 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.AdapterView;
+import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+import androidx.fragment.app.Fragment;
 
 import java.io.Serializable;
 
@@ -22,28 +21,66 @@ import site.madcat.appnotes.domain.Note;
 import site.madcat.appnotes.domain.NoteRepoImpl;
 import site.madcat.appnotes.domain.NotesRepo;
 
-public class ListActivity extends AppCompatActivity {
+public class ListActivity extends AppCompatActivity implements ListFragment.Controller, EditNoteFragment.Controller {
     private Toolbar toolbar;
-    private RecyclerView recyclerView;
-    private NotesAdapter adapter = new NotesAdapter();
-    private NotesRepo repository;
-
+    public boolean newRecord = false;
+    public NotesRepo repository;
+    public ListFragment listFragment;
+    public EditNoteFragment editNoteFragment = new EditNoteFragment();
+    private static final String REPOKEY = "REPO_KEY";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
-        initialsView();
+        repository = new NoteRepoImpl();
+        initToolbar();
+
+        listFragment = (ListFragment) getLastCustomNonConfigurationInstance();
+        if (listFragment == null) {
+            listFragment = new ListFragment();
+        }
+        loadList();
+    }
+
+    @Nullable
+    @Override
+    public Object onRetainCustomNonConfigurationInstance() {
+        return listFragment;
+    }
+
+    @Nullable
+    @Override
+    public Object getLastCustomNonConfigurationInstance() {
+        return super.getLastCustomNonConfigurationInstance();
     }
 
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
+        outState.putSerializable(REPOKEY, (Serializable) repository);
         super.onSaveInstanceState(outState);
     }
 
     @Override
     protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
+        repository = (NoteRepoImpl) savedInstanceState.getSerializable(REPOKEY);
+    }
+
+    public void loadList() {
+        if (getScreenOrientation() == true) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.container_fragment, listFragment).commit();
+        } else {
+            getSupportFragmentManager().beginTransaction().replace(R.id.container_fragment, listFragment).replace(R.id.note_detail_fragment, editNoteFragment).commit();
+        }
+    }
+
+    public boolean getScreenOrientation() {
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)
+            return true;
+        else if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
+            return false;
+        else
+            return true;
     }
 
     @Override
@@ -53,38 +90,34 @@ public class ListActivity extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.new_note: {
-                openEditActivity(null);
-                return true;
-            }
-            default:
-                return super.onOptionsItemSelected(item);
+    public void editNote(int id, String title, String detail) {
+        repository.deleteNote(id);
+        addNewNote(title, detail);
+    }
+
+    public void addNewNote(String title, String detail) {
+        repository.addNote(new Note(title, detail));
+        listFragment.refreshAdapter();
+    }
+
+    public void refreshAdapter() {
+        listFragment.refreshAdapter();
+    }
+
+    public void loadNote(Note note) {
+        if (getScreenOrientation() == true) {
+            moveToNotePortraitFragment(note);
+        } else {
+            moveToNoteLandFragment(note);
         }
     }
 
-    private void openEditActivity(@Nullable Note item) {
-        Intent editIntant = new Intent(this, EditActivity.class);
-        if (item != null) {
-            editIntant.putExtra(Note.class.getSimpleName(), (Serializable) item);
-        }
-        startActivityForResult(editIntant, 1);
+    private void moveToNotePortraitFragment(Note note) {
+        getSupportFragmentManager().beginTransaction().replace(R.id.container_fragment, editNoteFragment.setInputArgumentsNoteFrames(note)).addToBackStack(null).commit();
     }
 
-    private void initRecyclerView() {
-        repository = new NoteRepoImpl();
-        recyclerView = findViewById(R.id.recycler_view);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(adapter);
-        fillRecyclerView();
-        adapter.setData(repository.getNotes());
-        adapter.setOnItemClickListener(this::onItemClick);
-    }
-
-    private void onItemClick(Note item) {
-        openEditActivity(item);
+    private void moveToNoteLandFragment(Note note) {
+        getSupportFragmentManager().beginTransaction().replace(R.id.note_detail_fragment, editNoteFragment.setInputArgumentsNoteFrames(note)).commit();
     }
 
     private void initToolbar() {
@@ -92,27 +125,23 @@ public class ListActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
     }
 
-    private void initialsView() {
-        initToolbar();
-        initRecyclerView();
+    public NotesRepo getRepo() {
+        return repository;
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == -1) {
-            Note note = (Note) data.getSerializableExtra(Note.class.getSimpleName());
-            repository.addNote(new Note(note.getTitle(), note.getNoteBody()));
-            adapter.setData(repository.getNotes());
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.new_note: {
+                newRecord = true;
+                loadNote(null);
+                return true;
+            }
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 
-    private void fillRecyclerView() {
-        repository.addNote(new Note("заметка 1", "текст заметки1"));
-        repository.addNote(new Note("заметка 2", "текст заметки2 лалалалала лалалалал лалалал лалалалала лалалалал лалалал лалалалала лалалалал лалалал лалалалала лалалалал лалалал лалалалала лалалалал лалалал"));
-        repository.addNote(new Note("заметка 3", "текст заметки3"));
-        repository.addNote(new Note("заметка 4", "текст заметки4"));
-    }
-
-
 }
+
+
+

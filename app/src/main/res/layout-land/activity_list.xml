@@ -21,10 +21,27 @@
                 android:layout_height="wrap_content" />
         </com.google.android.material.appbar.AppBarLayout>
 
-        <FrameLayout
-            android:id="@+id/container_fragment"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"></FrameLayout>
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <FrameLayout
+                android:id="@+id/container_fragment"
+                android:layout_width="@dimen/zero"
+                android:layout_height="match_parent"
+                android:layout_weight="@integer/weight_note_frame">
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/note_detail_fragment"
+                android:layout_width="@dimen/zero"
+                android:layout_height="match_parent"
+                android:layout_weight="@integer/weight_note_frame"
+                android:background="@color/dark_gray"></FrameLayout>
+
+        </LinearLayout>
 
 
     </LinearLayout>
