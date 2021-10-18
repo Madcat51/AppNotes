@@ -1,4 +1,4 @@
-package site.madcat.appnotes.UI;
+package site.madcat.appnotes.ui;
 
 import android.view.View;
 import android.widget.TextView;

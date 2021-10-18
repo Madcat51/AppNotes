@@ -1,4 +1,4 @@
-package site.madcat.appnotes.UI;
+package site.madcat.appnotes.ui;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -12,8 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-
-import java.io.Serializable;
 
 import site.madcat.appnotes.R;
 import site.madcat.appnotes.domain.Note;
@@ -54,7 +52,7 @@ public class EditNoteFragment extends Fragment {
 
     @Override
     public void onResume() {
-        controller.refreshAdapter();
+
         super.onResume();
     }
 

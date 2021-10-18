@@ -1,4 +1,4 @@
-package site.madcat.appnotes.UI;
+package site.madcat.appnotes.ui;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -15,7 +15,6 @@ import android.view.ViewGroup;
 
 import site.madcat.appnotes.R;
 import site.madcat.appnotes.domain.Note;
-import site.madcat.appnotes.domain.NoteRepoImpl;
 import site.madcat.appnotes.domain.NotesRepo;
 
 

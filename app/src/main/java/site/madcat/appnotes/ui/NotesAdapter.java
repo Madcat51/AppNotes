@@ -1,9 +1,8 @@
-package site.madcat.appnotes.UI;
+package site.madcat.appnotes.ui;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -12,7 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import site.madcat.appnotes.R;
-import site.madcat.appnotes.UI.NoteVH;
 import site.madcat.appnotes.domain.Note;
 
 public class NotesAdapter extends RecyclerView.Adapter<NoteVH> {
