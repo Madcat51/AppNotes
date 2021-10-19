@@ -1,4 +1,4 @@
-package site.madcat.appnotes.ui;
+package site.madcat.appnotes.ui.pages.settings;
 
 import android.os.Bundle;
 

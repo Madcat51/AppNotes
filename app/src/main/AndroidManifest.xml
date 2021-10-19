@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppNotes" >
         <activity
-            android:name=".ui.EditActivity"
+            android:name=".ui.nouse.EditActivity"
             android:exported="true" />
         <activity
             android:name=".ui.ListActivity"

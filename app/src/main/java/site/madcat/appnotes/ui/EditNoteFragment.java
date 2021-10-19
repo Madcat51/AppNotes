@@ -28,7 +28,7 @@ public class EditNoteFragment extends Fragment {
     public EditNoteFragment() {
     }
 
-    interface Controller {
+    public interface Controller {
         void loadList();
 
         boolean getScreenOrientation();
@@ -50,11 +50,7 @@ public class EditNoteFragment extends Fragment {
         }
     }
 
-    @Override
-    public void onResume() {
 
-        super.onResume();
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

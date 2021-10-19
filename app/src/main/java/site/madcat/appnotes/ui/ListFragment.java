@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import site.madcat.appnotes.R;
 import site.madcat.appnotes.domain.Note;
 import site.madcat.appnotes.domain.NotesRepo;
+import site.madcat.appnotes.ui.NotesAdapter;
 
 
 public class ListFragment extends Fragment {
@@ -28,7 +29,7 @@ public class ListFragment extends Fragment {
     public ListFragment() {
     }
 
-    interface Controller {
+    public interface Controller {
         void loadNote(Note note);
 
         void addNewNote(String title, String detail);
@@ -100,7 +101,7 @@ public class ListFragment extends Fragment {
         adapter.setData(listRepo.getNotes());
     }
 
-    private void onItemClick(Note note) {
+    public void onItemClick(Note note) {
         controller.loadNote(note);
     }
 

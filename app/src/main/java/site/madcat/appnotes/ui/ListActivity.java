@@ -22,8 +22,10 @@ import site.madcat.appnotes.R;
 import site.madcat.appnotes.domain.Note;
 import site.madcat.appnotes.domain.NoteRepoImpl;
 import site.madcat.appnotes.domain.NotesRepo;
+import site.madcat.appnotes.ui.pages.arhives.ArhiveFragment;
+import site.madcat.appnotes.ui.pages.settings.SettingFragment;
 
-public class ListActivity extends AppCompatActivity implements ListFragment.Controller, EditNoteFragment.Controller {
+public class ListActivity extends AppCompatActivity implements  ListFragment.Controller, EditNoteFragment.Controller {
     private Toolbar toolbar;
     private BottomNavigationView bottomNavigationView;
     public boolean newRecord = false;
