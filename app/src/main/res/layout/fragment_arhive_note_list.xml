@@ -3,13 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.MainListFragment">
+    tools:context=".ui.pages.arhives.ArhiveNoteListFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#CDDC39"
+        android:background="#9C27B0"
         android:text="@string/hello_blank_fragment" />
 
 </FrameLayout>

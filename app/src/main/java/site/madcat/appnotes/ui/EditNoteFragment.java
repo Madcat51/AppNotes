@@ -73,7 +73,7 @@ public class EditNoteFragment extends Fragment {
         initialsView(view);
         getParams();
         saveChangeButton.setOnClickListener(v -> {
-            if (titleEditText.getText() != null | detailEditText.getText() != null) {
+   /*         if (titleEditText.getText() != null | detailEditText.getText() != null) {
                 if (((ListActivity) requireActivity()).newRecord == true) {
                     controller.addNewNote(titleEditText.getText().toString(), detailEditText.getText().toString());
                     ((ListActivity) requireActivity()).newRecord = false;
@@ -86,7 +86,7 @@ public class EditNoteFragment extends Fragment {
                 if (controller.getScreenOrientation() == true) {
                     controller.loadList();
                 }
-            }
+            }*/
         });
     }
 

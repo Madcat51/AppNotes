@@ -22,16 +22,17 @@ import site.madcat.appnotes.R;
 import site.madcat.appnotes.domain.Note;
 import site.madcat.appnotes.domain.NoteRepoImpl;
 import site.madcat.appnotes.domain.NotesRepo;
-import site.madcat.appnotes.ui.pages.arhives.ArhiveFragment;
+import site.madcat.appnotes.ui.pages.arhives.ArhiveNoteListFragment;
 import site.madcat.appnotes.ui.pages.settings.SettingFragment;
 
 public class ListActivity extends AppCompatActivity implements  ListFragment.Controller, EditNoteFragment.Controller {
     private Toolbar toolbar;
     private BottomNavigationView bottomNavigationView;
+
     public boolean newRecord = false;
-    public NotesRepo repository;
-    public ArhiveFragment arhiveFragment=new ArhiveFragment();
-    public MainListFragment mainListFragment=new MainListFragment();
+    public NotesRepo activeNotesRepository;
+    public ArhiveNoteListFragment arhiveFragment=new ArhiveNoteListFragment();
+    public ActiveNoteListFragment mainListFragment=new ActiveNoteListFragment();
     public SettingFragment settingFragment=new SettingFragment();
     public ListFragment listFragment;
     public EditNoteFragment editNoteFragment = new EditNoteFragment();
@@ -41,7 +42,7 @@ public class ListActivity extends AppCompatActivity implements  ListFragment.Con
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
-        repository = new NoteRepoImpl();
+        activeNotesRepository = new NoteRepoImpl();
         initViews();
 
 
@@ -103,13 +104,13 @@ public class ListActivity extends AppCompatActivity implements  ListFragment.Con
 
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
-        outState.putSerializable(REPOKEY, (Serializable) repository);
+        outState.putSerializable(REPOKEY, (Serializable)activeNotesRepository);
         super.onSaveInstanceState(outState);
     }
 
     @Override
     protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
-        repository = (NoteRepoImpl) savedInstanceState.getSerializable(REPOKEY);
+        activeNotesRepository= (NoteRepoImpl) savedInstanceState.getSerializable(REPOKEY);
     }
 
     public void loadList() {
@@ -137,12 +138,12 @@ public class ListActivity extends AppCompatActivity implements  ListFragment.Con
     }
 
     public void editNote(int id, String title, String detail) {
-        repository.deleteNote(id);
+        activeNotesRepository.deleteNote(id);
         addNewNote(title, detail);
     }
 
     public void addNewNote(String title, String detail) {
-        repository.addNote(new Note(title, detail));
+        activeNotesRepository.addNote(new Note(title, detail));
         listFragment.refreshAdapter();
     }
 
@@ -168,7 +169,7 @@ public class ListActivity extends AppCompatActivity implements  ListFragment.Con
 
 
     public NotesRepo getRepo() {
-        return repository;
+        return activeNotesRepository;
     }
 
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
