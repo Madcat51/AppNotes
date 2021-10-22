@@ -1,5 +1,6 @@
 package site.madcat.appnotes.ui;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -11,12 +12,19 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import site.madcat.appnotes.R;
+import site.madcat.appnotes.domain.Note;
+import site.madcat.appnotes.domain.NoteRepoImpl;
+import site.madcat.appnotes.domain.NotesRepo;
 
 
 public class ActiveNoteListFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+
+    public NoteListFragment noteListFragment=new NoteListFragment();
+    public EditNoteFragment editNoteFragment = new EditNoteFragment();
+
+    private static ControllerNoteFragment controllerNoteFragment;
+
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
@@ -24,9 +32,12 @@ public class ActiveNoteListFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public ActiveNoteListFragment() {
-        // Required empty public constructor
+    public ActiveNoteListFragment() { }
+
+    public interface ControllerNoteFragment {
+        boolean getScreenOrientation();
     }
+
 
     public static ActiveNoteListFragment newInstance(String param1, String param2) {
         ActiveNoteListFragment fragment = new ActiveNoteListFragment();
@@ -35,6 +46,18 @@ public class ActiveNoteListFragment extends Fragment {
         args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
+    }
+
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        super.onAttach(context);
+        if (context instanceof ActiveNoteListFragment.ControllerNoteFragment) {
+            controllerNoteFragment = (ActiveNoteListFragment.ControllerNoteFragment) context;
+        } else {
+            //todo
+        }
     }
 
     @Override
@@ -49,13 +72,51 @@ public class ActiveNoteListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_active_note_list, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        getChildFragmentManager().beginTransaction().replace(R.id.active_note_fragment, new ListFragment()).commit();
+        loadList();
     }
+
+
+    public void loadList() {
+        if (controllerNoteFragment.getScreenOrientation() == true) {
+            getChildFragmentManager().beginTransaction().replace(R.id.active_note_fragment, noteListFragment).commit();
+        } else {
+            getChildFragmentManager().beginTransaction().replace(R.id.active_note_fragment, noteListFragment).replace(R.id.note_detail_fragment, editNoteFragment).commit();
+        }
+    }
+
+    public  void loadNote(@Nullable Note note) {
+        if (controllerNoteFragment.getScreenOrientation() == true) {
+            moveToNotePortraitFragment(note);
+        } else {
+            moveToNoteLandFragment(note);
+        }
+    }
+
+    private void moveToNotePortraitFragment(Note note) {
+         getChildFragmentManager().beginTransaction().replace(R.id.container_fragment, editNoteFragment.setInputArgumentsNoteFrames(note)).addToBackStack(null).commit();
+    }
+
+    private void moveToNoteLandFragment(Note note) {
+         getChildFragmentManager().beginTransaction().replace(R.id.note_detail_fragment, editNoteFragment.setInputArgumentsNoteFrames(note)).commit();
+    }
+
+
+    public void addNewNote(String title, String detail) {
+        //NoteListFragment.addNote(new Note(title, detail));
+        noteListFragment.refreshAdapter();
+    }
+
+
+    public void refreshAdapter() {
+        noteListFragment.refreshAdapter();
+    }
+
+
+
 }

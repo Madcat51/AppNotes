@@ -25,18 +25,45 @@ import site.madcat.appnotes.domain.NotesRepo;
 import site.madcat.appnotes.ui.pages.arhives.ArhiveNoteListFragment;
 import site.madcat.appnotes.ui.pages.settings.SettingFragment;
 
-public class ListActivity extends AppCompatActivity implements  ListFragment.Controller, EditNoteFragment.Controller {
+public class ListActivity extends AppCompatActivity implements NoteListFragment.Controller, EditNoteFragment.Controller,ActiveNoteListFragment.ControllerNoteFragment {
     private Toolbar toolbar;
     private BottomNavigationView bottomNavigationView;
-
-    public boolean newRecord = false;
     public NotesRepo activeNotesRepository;
+    public boolean newRecord = false;
+
     public ArhiveNoteListFragment arhiveFragment=new ArhiveNoteListFragment();
     public ActiveNoteListFragment mainListFragment=new ActiveNoteListFragment();
     public SettingFragment settingFragment=new SettingFragment();
-    public ListFragment listFragment;
-    public EditNoteFragment editNoteFragment = new EditNoteFragment();
+
+
     private static final String REPOKEY = "REPO_KEY";
+
+
+    /*   @Nullable
+   @Override
+   public Object onRetainCustomNonConfigurationInstance() {
+       return listFragment;
+   }
+*/
+    @Nullable
+    @Override
+    public Object getLastCustomNonConfigurationInstance() {
+        return super.getLastCustomNonConfigurationInstance();
+    }
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        //   outState.putSerializable(REPOKEY, (Serializable)activeNotesRepository);
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
+        //   activeNotesRepository= (NoteRepoImpl) savedInstanceState.getSerializable(REPOKEY);
+    }
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,13 +71,6 @@ public class ListActivity extends AppCompatActivity implements  ListFragment.Con
         setContentView(R.layout.activity_list);
         activeNotesRepository = new NoteRepoImpl();
         initViews();
-
-
-       /* listFragment = (ListFragment) getLastCustomNonConfigurationInstance();
-        if (listFragment == null) {
-            listFragment = new ListFragment();
-        }*/
-        //loadList();
     }
 
     private void initViews() {
@@ -90,36 +110,12 @@ public class ListActivity extends AppCompatActivity implements  ListFragment.Con
         setSupportActionBar(toolbar);
     }
 
-    @Nullable
-    @Override
-    public Object onRetainCustomNonConfigurationInstance() {
-        return listFragment;
-    }
-
-    @Nullable
-    @Override
-    public Object getLastCustomNonConfigurationInstance() {
-        return super.getLastCustomNonConfigurationInstance();
-    }
 
     @Override
-    protected void onSaveInstanceState(@NonNull Bundle outState) {
-        outState.putSerializable(REPOKEY, (Serializable)activeNotesRepository);
-        super.onSaveInstanceState(outState);
-    }
-
-    @Override
-    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
-        activeNotesRepository= (NoteRepoImpl) savedInstanceState.getSerializable(REPOKEY);
-    }
-
     public void loadList() {
-        if (getScreenOrientation() == true) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.container_fragment, listFragment).commit();
-        } else {
-            getSupportFragmentManager().beginTransaction().replace(R.id.container_fragment, listFragment).replace(R.id.note_detail_fragment, editNoteFragment).commit();
-        }
+
     }
+
 
     public boolean getScreenOrientation() {
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)
@@ -130,6 +126,13 @@ public class ListActivity extends AppCompatActivity implements  ListFragment.Con
             return true;
     }
 
+
+
+    public void editNote(int id, String title, String detail) {
+        activeNotesRepository.deleteNote(id);
+        addNewNote(title, detail);
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -137,46 +140,11 @@ public class ListActivity extends AppCompatActivity implements  ListFragment.Con
         return super.onCreateOptionsMenu(menu);
     }
 
-    public void editNote(int id, String title, String detail) {
-        activeNotesRepository.deleteNote(id);
-        addNewNote(title, detail);
-    }
-
-    public void addNewNote(String title, String detail) {
-        activeNotesRepository.addNote(new Note(title, detail));
-        listFragment.refreshAdapter();
-    }
-
-    public void refreshAdapter() {
-        listFragment.refreshAdapter();
-    }
-
-    public void loadNote(Note note) {
-        if (getScreenOrientation() == true) {
-            moveToNotePortraitFragment(note);
-        } else {
-            moveToNoteLandFragment(note);
-        }
-    }
-
-    private void moveToNotePortraitFragment(Note note) {
-        getSupportFragmentManager().beginTransaction().replace(R.id.container_fragment, editNoteFragment.setInputArgumentsNoteFrames(note)).addToBackStack(null).commit();
-    }
-
-    private void moveToNoteLandFragment(Note note) {
-        getSupportFragmentManager().beginTransaction().replace(R.id.note_detail_fragment, editNoteFragment.setInputArgumentsNoteFrames(note)).commit();
-    }
-
-
-    public NotesRepo getRepo() {
-        return activeNotesRepository;
-    }
-
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.new_note: {
                 newRecord = true;
-                loadNote(null);
+             ActiveNoteListFragment.loadNote(null);
                 return true;
             }
             default:
@@ -184,7 +152,26 @@ public class ListActivity extends AppCompatActivity implements  ListFragment.Con
         }
     }
 
+
+
+
+    public NotesRepo getRepo() {
+        return activeNotesRepository;
+    }
+
+    @Override
+    public void loadNote(Note note) {
+
+    }
+
+    @Override
+    public void refreshAdapter() {
+
+    }
+
+
 }
+
 
 
 

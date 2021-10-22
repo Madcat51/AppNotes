@@ -19,20 +19,22 @@ import site.madcat.appnotes.domain.NotesRepo;
 import site.madcat.appnotes.ui.NotesAdapter;
 
 
-public class ListFragment extends Fragment {
+public class NoteListFragment extends Fragment {
+
     private NotesRepo listRepo;
     private RecyclerView recyclerView;
     private NotesAdapter adapter = new NotesAdapter();
     private Controller controller;
 
 
-    public ListFragment() {
+    public NoteListFragment() {
     }
 
     public interface Controller {
         void loadNote(Note note);
 
-        void addNewNote(String title, String detail);
+       // void addNewNote(String title, String detail);
+
 
         NotesRepo getRepo();
     }
@@ -63,6 +65,7 @@ public class ListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         return inflater.inflate(R.layout.fragment_list, container, false);
 
     }
@@ -70,12 +73,13 @@ public class ListFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        initData();
     }
 
     @Override
     public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
         super.onViewStateRestored(savedInstanceState);
-        initData();
+     //  initData();
     }
 
     @Override
@@ -85,8 +89,9 @@ public class ListFragment extends Fragment {
     }
 
     public void initData() {
+        if (controller.getRepo()!=null){
         listRepo = controller.getRepo();
-        initRecyclerView();
+        initRecyclerView();}
     }
 
     public void initRecyclerView() {
