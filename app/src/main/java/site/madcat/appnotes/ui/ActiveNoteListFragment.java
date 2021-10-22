@@ -38,7 +38,7 @@ public class ActiveNoteListFragment extends Fragment {
         boolean getScreenOrientation();
     }
 
-
+/*
     public static ActiveNoteListFragment newInstance(String param1, String param2) {
         ActiveNoteListFragment fragment = new ActiveNoteListFragment();
         Bundle args = new Bundle();
@@ -46,7 +46,7 @@ public class ActiveNoteListFragment extends Fragment {
         args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
-    }
+    }*/
 
 
     @Override
@@ -64,8 +64,8 @@ public class ActiveNoteListFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+          /*  mParam1 = getArguments().getString(ARG_PARAM1);
+            mParam2 = getArguments().getString(ARG_PARAM2);*/
         }
     }
 

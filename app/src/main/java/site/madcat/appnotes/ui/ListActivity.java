@@ -31,8 +31,8 @@ public class ListActivity extends AppCompatActivity implements NoteListFragment.
     public NotesRepo activeNotesRepository;
     public boolean newRecord = false;
 
-    public ArhiveNoteListFragment arhiveFragment=new ArhiveNoteListFragment();
-    public ActiveNoteListFragment mainListFragment=new ActiveNoteListFragment();
+    public ArhiveNoteListFragment arhiveNotesListFragment=new ArhiveNoteListFragment();
+    public ActiveNoteListFragment activeNotesListFragment=new ActiveNoteListFragment();
     public SettingFragment settingFragment=new SettingFragment();
 
 
@@ -85,11 +85,11 @@ public class ListActivity extends AppCompatActivity implements NoteListFragment.
             Fragment fragment;
             switch (item.getItemId()) {
                 case R.id.note_navigation: {
-                    fragment = mainListFragment;
+                    fragment = activeNotesListFragment;
                     break;
                 }
                 case R.id.arhive_navigation: {
-                    fragment = arhiveFragment;
+                    fragment = arhiveNotesListFragment;
                     break;
                 }
                 case R.id.setting_navigation: {
@@ -97,7 +97,7 @@ public class ListActivity extends AppCompatActivity implements NoteListFragment.
                     break;
                 }
                 default:
-                    fragment = mainListFragment;
+                    fragment =activeNotesListFragment;
                     break;
             }
             fragmentManager.beginTransaction().replace(R.id.container_fragment,fragment).commit();
@@ -111,10 +111,6 @@ public class ListActivity extends AppCompatActivity implements NoteListFragment.
     }
 
 
-    @Override
-    public void loadList() {
-
-    }
 
 
     public boolean getScreenOrientation() {
@@ -134,6 +130,12 @@ public class ListActivity extends AppCompatActivity implements NoteListFragment.
     }
 
     @Override
+    public void addNewNote(String title, String detail) {
+
+    }
+
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main_menu, menu);
@@ -144,7 +146,7 @@ public class ListActivity extends AppCompatActivity implements NoteListFragment.
         switch (item.getItemId()) {
             case R.id.new_note: {
                 newRecord = true;
-             ActiveNoteListFragment.loadNote(null);
+                activeNotesListFragment.loadNote(null);
                 return true;
             }
             default:
@@ -166,9 +168,12 @@ public class ListActivity extends AppCompatActivity implements NoteListFragment.
 
     @Override
     public void refreshAdapter() {
-
     }
 
+    @Override
+    public void loadList() {
+
+    }
 
 }
 
