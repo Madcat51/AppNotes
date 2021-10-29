@@ -15,10 +15,10 @@ import site.madcat.appnotes.UI.NotesAdapter.onItemClickListener
 import site.madcat.appnotes.domain.Note
 
 class ListFragment : Fragment() {
-    private var listRepo: NotesRepo? = null
-    private var recyclerView: RecyclerView? = null
+    private lateinit var listRepo: NotesRepo
+    private lateinit var recyclerView: RecyclerView
     private val adapter = NotesAdapter()
-    private var controller: Controller? = null
+    private var controller: Controller? = null //для того чтоб убить в onDestroy
 
     internal interface Controller {
         fun loadNote(note: Note?)
@@ -42,7 +42,7 @@ class ListFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //  setRetainInstance(true);
+        setRetainInstance(true);
     }
 
     override fun onCreateView(
@@ -50,10 +50,6 @@ class ListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.fragment_list, container, false)
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
     }
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
@@ -67,23 +63,23 @@ class ListFragment : Fragment() {
     }
 
     fun initData() {
-        listRepo = controller!!.repo
+        listRepo = controller!!.repo!!
         initRecyclerView()
     }
 
     fun initRecyclerView() {
-        recyclerView = activity!!.findViewById(R.id.recycler_view)
+        recyclerView = requireActivity().findViewById(R.id.recycler_view)
         recyclerView.setLayoutManager(LinearLayoutManager(context))
         recyclerView.setAdapter(adapter)
-        adapter.setData(listRepo!!.notes)
+        adapter.setData(listRepo.notes)
         adapter.setOnItemClickListener { note: Note -> onItemClick(note) }
     }
 
     fun refreshAdapter() {
-        adapter.setData(listRepo!!.notes)
+        adapter.setData(listRepo.notes)
     }
 
     private fun onItemClick(note: Note) {
-        controller!!.loadNote(note)
+        controller?.loadNote(note)
     }
 }

@@ -10,7 +10,9 @@
         android:layout_margin="@dimen/margin_view"
         android:background="?attr/selectableItemBackground"
         android:focusable="auto"
-        android:padding="@dimen/padding_view">
+
+        android:padding="@dimen/padding_view"
+        app:cardCornerRadius="8dp">
 
         <LinearLayout
             android:layout_width="match_parent"

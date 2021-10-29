@@ -8,18 +8,21 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.fragment.app.Fragment
+import com.google.mlkit.vision.text.Text
 import site.madcat.appnotes.R
 import site.madcat.appnotes.UI.EditNoteFragment
 import site.madcat.appnotes.domain.Note
 
 class EditNoteFragment : Fragment() {
-    private var titleEditText: EditText? = null
-    private var detailEditText: EditText? = null
-    private var saveChangeButton: Button? = null
-    private var id = 0
+    private var controller: Controller? = null //для того чтоб убить в onDestroy
+    private lateinit var titleEditText: EditText
+    private lateinit var detailEditText: EditText
+    private lateinit var saveChangeButton: Button
+
+    internal var id = 0
     private var oldTitle: String? = null
     private var oldDetail: String? = null
-    private var controller: Controller? = null
+
 
     internal interface Controller {
         fun loadList()
@@ -38,14 +41,6 @@ class EditNoteFragment : Fragment() {
         }
     }
 
-    override fun onResume() {
-        controller!!.refreshAdapter()
-        super.onResume()
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -58,21 +53,22 @@ class EditNoteFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initialsView(view)
         params
-        saveChangeButton!!.setOnClickListener { v: View? ->
-            if (titleEditText!!.text != null!! or detailEditText!!.text != null) {
+        saveChangeButton.setOnClickListener { v: View? ->
+            if ((titleEditText.text.isNotEmpty()) or (detailEditText.text.isNotEmpty())) {
+
                 if ((requireActivity() as ListActivity).newRecord == true) {
                     controller!!.addNewNote(
-                        titleEditText!!.text.toString(),
-                        detailEditText!!.text.toString()
+                        titleEditText.text.toString(),
+                        detailEditText.text.toString()
                     )
                     (requireActivity() as ListActivity).newRecord = false
                     clearView()
                 } else {
-                    if ((oldTitle !== titleEditText!!.text.toString()) or (oldTitle !== titleEditText!!.text.toString())) {
+                    if ((oldTitle != titleEditText.text.toString()) or (oldTitle != titleEditText.text.toString())) {
                         controller!!.editNote(
                             id,
-                            titleEditText!!.text.toString(),
-                            detailEditText!!.text.toString()
+                            titleEditText.text.toString(),
+                            detailEditText.text.toString()
                         )
                     }
                 }
@@ -81,6 +77,11 @@ class EditNoteFragment : Fragment() {
                 }
             }
         }
+    }
+
+    override fun onDestroy() {
+        controller = null
+        super.onDestroy()
     }
 
     val params: Unit
@@ -96,22 +97,23 @@ class EditNoteFragment : Fragment() {
         }
 
     private fun clearView() {
-        titleEditText.setText(null)
-        detailEditText.setText(null)
+        titleEditText.text = null
+        detailEditText.text = null
     }
 
     private fun initialsView(view: View) {
         titleEditText = view.findViewById(R.id.title_edit_text)
         detailEditText = view.findViewById(R.id.body_edit_text)
         saveChangeButton = view.findViewById(R.id.save_change_button)
+
     }
 
     private fun getNoteFromList(note: Note?) {
         if (note != null) {
             oldTitle = note.title
             oldDetail = note.noteDetail
-            titleEditText!!.setText(note.title)
-            detailEditText!!.setText(note.noteDetail)
+            titleEditText.setText(note.title)
+            detailEditText.setText(note.noteDetail)
             id = note.id
         }
     }
